@@ -31,7 +31,7 @@ dependencies {
     compileOnly "ru.smole.advancedpass:advancedpass:1.0-SNAPSHOT"
 }
 ```
-- In final initialize system using ``AdvancedPass.initialize(jdbcUrl, username, password, initPlayerLoader (boolean))`` while plugin is enabling.
+- In final initialize system using ``AdvancedPass.initialize(jdbcUrl, username, password, isInitPlayerLoader)`` while plugin is enabling.
 
 # How to use?
 > Add some levels in pool (ordinal is level)
