@@ -23,13 +23,7 @@ Level increases every 100 xp (levels = xp / 100). Level limit is levels pool siz
 ## Gradle:
 ```gradle
 repositories {
-    maven {
-        url = "https://maven.pkg.github.com/Smole17/*"
-        credentials {
-            username = System.getenv("GITHUB_ACTOR")
-            password = System.getenv("GITHUB_TOKEN")
-        }
-    }
+    maven { url = "https://maven.pkg.github.com/Smole17/*" }
 }
 ```
 ```gradle
