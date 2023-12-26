@@ -1,5 +1,5 @@
 # Important information
-> Level increases every 100 xp (levels = xp / 100). Level limit is levels pool size.
+Level increases every 100 xp (levels = xp / 100). Level limit is levels pool size.
 
 # Begging
 - Firstly, you need to install ORMLite (6.1) to use this in your workspace.
