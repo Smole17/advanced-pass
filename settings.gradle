@@ -1,0 +1,11 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        mavenCentral()
+        maven { url = "https://repo.papermc.io/repository/maven-public/" }
+    }
+}
+
+rootProject.name = 'AdvancedPass'
+
