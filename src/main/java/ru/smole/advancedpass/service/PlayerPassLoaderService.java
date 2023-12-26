@@ -8,23 +8,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import ru.smole.advancedpass.AdvancedPass;
 import ru.smole.advancedpass.pass.holder.PassHolder;
-import ru.smole.advancedpass.pass.holder.dao.SimplePassHolderDAO;
 import ru.smole.advancedpass.pass.holder.entity.SimplePassHolder;
 
 import java.util.Map;
 import java.util.UUID;
 
-public class PassLoaderService implements Listener {
+public class PlayerPassLoaderService implements Listener {
 
-    private final SimplePassHolderDAO passHolderDAO;
     private final Map<UUID, PassHolder> passHolders;
 
-    public PassLoaderService(SimplePassHolderDAO passHolderDAO, Map<UUID, PassHolder> passHolders) {
-        this.passHolderDAO = passHolderDAO;
+    public PlayerPassLoaderService(Map<UUID, PassHolder> passHolders) {
         this.passHolders = passHolders;
 
-        Bukkit.getPluginManager().registerEvents(this, JavaPlugin.getProvidingPlugin(PassLoaderService.class));
+        Bukkit.getPluginManager().registerEvents(this, JavaPlugin.getProvidingPlugin(PlayerPassLoaderService.class));
     }
 
     @EventHandler
@@ -32,7 +30,7 @@ public class PassLoaderService implements Listener {
         val player = event.getPlayer();
         val uniqueId = player.getUniqueId();
 
-        val foundHolder = passHolderDAO.findByUniqueId(uniqueId);
+        val foundHolder = AdvancedPass.getPassHolderDao().findByUniqueId(uniqueId);
 
         val holder = foundHolder.orElseGet(() -> (SimplePassHolder) SimplePassHolder
                 .builder()
@@ -51,6 +49,6 @@ public class PassLoaderService implements Listener {
 
         val holder = (SimplePassHolder) passHolders.remove(uniqueId);
 
-        passHolderDAO.createOrUpdate(holder);
+        AdvancedPass.getPassHolderDao().createOrUpdate(holder);
     }
 }

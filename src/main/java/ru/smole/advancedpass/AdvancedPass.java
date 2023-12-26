@@ -9,10 +9,11 @@ import lombok.val;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
 import ru.smole.advancedpass.pass.holder.PassHolder;
+import ru.smole.advancedpass.pass.holder.dao.SimplePassHolderDAO;
 import ru.smole.advancedpass.pass.holder.entity.SimplePassHolder;
 import ru.smole.advancedpass.pass.level.PassLevel;
 import ru.smole.advancedpass.pass.quest.PassQuest;
-import ru.smole.advancedpass.service.PassLoaderService;
+import ru.smole.advancedpass.service.PlayerPassLoaderService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,19 +26,20 @@ public class AdvancedPass {
     private final Map<Integer, PassLevel> PASS_LEVELS = new HashMap<>();
     private final Map<String, PassQuest> PASS_QUESTS = new HashMap<>();
     private final Map<UUID, PassHolder> PASS_HOLDERS = new HashMap<>();
+    private SimplePassHolderDAO PASS_HOLDER_DAO;
 
     @SneakyThrows
-    public void initialize(@NotNull String jdbcUrl, @NotNull String username, @NotNull String password) {
+    public void initialize(@NotNull String jdbcUrl, @NotNull String username, @NotNull String password, boolean initPlayerLoader) {
         val connectionSource = new JdbcPooledConnectionSource(jdbcUrl);
+
         connectionSource.setUsername(username);
         connectionSource.setPassword(password);
 
         TableUtils.createTableIfNotExists(connectionSource, SimplePassHolder.class);
 
-        new PassLoaderService(
-                DaoManager.createDao(connectionSource, SimplePassHolder.class),
-                PASS_HOLDERS
-        );
+        PASS_HOLDER_DAO = DaoManager.createDao(connectionSource, SimplePassHolder.class);
+
+        if (initPlayerLoader) new PlayerPassLoaderService(PASS_HOLDERS);
     }
 
     public @Range(from = 0, to = Integer.MAX_VALUE) int getLevels() {
@@ -62,5 +64,9 @@ public class AdvancedPass {
 
     public Optional<PassHolder> getPassHolder(UUID uniqueId) {
         return !PASS_HOLDERS.containsKey(uniqueId) ? Optional.empty() : Optional.of(PASS_HOLDERS.get(uniqueId));
+    }
+
+    public static SimplePassHolderDAO getPassHolderDao() {
+        return PASS_HOLDER_DAO;
     }
 }
