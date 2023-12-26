@@ -9,7 +9,7 @@ Level increases every 100 xp (levels = xp / 100). Level limit is levels pool siz
 <repositories>
     <repository>
         <id>Maven GitHub Repository</id>
-        <url>"https://maven.pkg.github.com/Smole17/*"</url>
+        <url>https://maven.pkg.github.com/Smole17/*</url>
     </repository>
 </repositories>
 ```
